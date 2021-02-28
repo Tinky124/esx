@@ -35,7 +35,6 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 	NetworkSetFriendlyFireOption(true)
 
 	-- disable wanted level
-	ClearPlayerWantedLevel(PlayerId())
 	SetMaxWantedLevel(0)
 
 	ESX.Game.Teleport(PlayerPedId(), {
@@ -260,11 +259,13 @@ function StartServerSyncLoops()
 	Citizen.CreateThread(function()
 		while true do
 			Citizen.Wait(0)
-
+			local letSleep = true
+			local playerPed = PlayerPedId()
+			if IsPedArmed(playerPed, 4) then
+				letSleep = false
 			if isDead then
 				Citizen.Wait(500)
 			else
-				local playerPed = PlayerPedId()
 				if IsPedShooting(playerPed) then
 					local _,weaponHash = GetCurrentPedWeapon(playerPed, true)
 					local weapon = ESX.GetWeaponFromHash(weaponHash)
@@ -279,6 +280,7 @@ function StartServerSyncLoops()
 					end
 				end
 			end
+			if letSleep then Citizen.Wait(500) end
 		end
 	end)
 
