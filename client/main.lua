@@ -266,6 +266,7 @@ function StartServerSyncLoops()
 				if IsPedShooting(playerPed) then
 					local _,weaponHash = GetCurrentPedWeapon(playerPed, true)
 					local weapon = ESX.GetWeaponFromHash(weaponHash)
+
 					while IsControlPressed(0, 24) do Wait(0) end
 					if weapon then
 						local ammoCount = GetAmmoInPedWeapon(playerPed, weaponHash)
@@ -276,6 +277,7 @@ function StartServerSyncLoops()
 			if letSleep then Citizen.Wait(500) end
 		end
 	end)
+end
 
 	-- sync current player coords with server, partially replaced with server sided natives now but still used for fallback
 	Citizen.CreateThread(function()
