@@ -263,17 +263,10 @@ function StartServerSyncLoops()
 			local playerPed = PlayerPedId()
 			if IsPedArmed(playerPed, 4) then
 				letSleep = false
-			if isDead then
-				Citizen.Wait(500)
-			else
 				if IsPedShooting(playerPed) then
 					local _,weaponHash = GetCurrentPedWeapon(playerPed, true)
 					local weapon = ESX.GetWeaponFromHash(weaponHash)
-
-					while IsControlPressed(0, 24) do
-						Citizen.Wait(0)
-					end
-
+					while IsControlPressed(0, 24) do Wait(0) end
 					if weapon then
 						local ammoCount = GetAmmoInPedWeapon(playerPed, weaponHash)
 						TriggerServerEvent('esx:updateWeaponAmmo', weapon.name, ammoCount)
