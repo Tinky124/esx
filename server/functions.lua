@@ -188,27 +188,12 @@ ESX.SavePlayer = function(xPlayer, cb)
 end
 
 ESX.SavePlayers = function(cb)
-	local xPlayers, asyncTasks, timeStart = ESX.GetPlayers(), {}, os.clock()
-
+	local xPlayers = GetPlayers()
 	if #xPlayers > 0 then
 		for i=1, #xPlayers, 1 do
-			table.insert(asyncTasks, function(cb2)
-				local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
-
-				if xPlayer then
-					ESX.SavePlayer(xPlayer, cb2)
-				end
-			end)
-		end
-
-		Async.parallelLimit(asyncTasks, 8, function(results)
-			local elapsedTime = os.clock() - timeStart
-			print(('[ESX] [^2INFO^7] Saved %s player(s), operation took %.0f second(s)'):format(#xPlayers, elapsedTime))
-
-			if cb then
-				cb()
-			end
-		end)
+		local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
+		if xPlayer then ESX.SavePlayer(xPlayer) end end
+		if cb then cb() end
 	end
 end
 
